@@ -11,29 +11,28 @@ class TwoPlayersViewController: UIViewController {
     
     @IBOutlet var exitButton: UIButton!
     
+    @IBOutlet weak var box1: UIImageView!
+    @IBOutlet weak var box2: UIImageView!
+    @IBOutlet weak var box3: UIImageView!
+    @IBOutlet weak var box4: UIImageView!
+    @IBOutlet weak var box5: UIImageView!
+    @IBOutlet weak var box6: UIImageView!
+    @IBOutlet weak var box7: UIImageView!
+    @IBOutlet weak var box8: UIImageView!
+    @IBOutlet weak var box9: UIImageView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        buttonsSetUp(button: exitButton)
-    }
-    
-    func buttonsSetUp(button: UIButton) {
         
-        let borderAlpha : CGFloat = 0.7
-        let cornerRadius : CGFloat = 15.0
-        
-        button.backgroundColor = UIColor.clear
-        button.layer.borderWidth = 1.0
-        button.layer.borderColor = UIColor(white: 0.0, alpha: borderAlpha).cgColor
-        button.layer.cornerRadius = cornerRadius
+        let design = DesignPreset()
+        design.buttonsSetUp(button: exitButton)
     }
     
     @IBAction func cancelButtonPressed() {
         dismiss(animated: true)
     }
-    
-    class Game {
-        
-    }
 }
 
+enum Box: String {
+    case one, two, three, four, five, six, seven, eight, nine
+}
