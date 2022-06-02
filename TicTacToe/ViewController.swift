@@ -15,21 +15,21 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        buttonsSetUp(button: onePlayerButton)
-        buttonsSetUp(button: twoPlayersButton)
+        buttonsSetUp(button: onePlayerButton, text: "One Player")
+        buttonsSetUp(button: twoPlayersButton, text: "Two Players")
         
     }
 
-    func buttonsSetUp(button: UIButton) {
+    func buttonsSetUp(button: UIButton, text: String) {
         
-        //let borderAlpha : CGFloat = 0.7
+        let borderAlpha : CGFloat = 0.7
         let cornerRadius : CGFloat = 15.0
         
         //onePlayerButton.frame = CGRect(x: 100, y: 100, width: 200, height: 40)
-        button.setTitle("One Player", for: UIControl.State.normal)
+        button.setTitle(text, for: UIControl.State.normal)
         button.backgroundColor = UIColor.clear
         button.layer.borderWidth = 1.0
-        //onePlayerButton.layer.borderColor = UIColor(white: 1.0, alpha: borderAlpha).cgColor
+        button.layer.borderColor = UIColor(white: 0.0, alpha: borderAlpha).cgColor
         button.layer.cornerRadius = cornerRadius
     }
     

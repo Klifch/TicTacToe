@@ -13,6 +13,7 @@
 		D3F8C5152847CAF30082012D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3F8C5132847CAF30082012D /* Main.storyboard */; };
 		D3F8C5172847CAF40082012D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3F8C5162847CAF40082012D /* Assets.xcassets */; };
 		D3F8C51A2847CAF40082012D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3F8C5182847CAF40082012D /* LaunchScreen.storyboard */; };
+		D3F8C52228480C810082012D /* TwoPlayersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F8C52128480C810082012D /* TwoPlayersViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		D3F8C5162847CAF40082012D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D3F8C5192847CAF40082012D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D3F8C51B2847CAF40082012D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D3F8C52128480C810082012D /* TwoPlayersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoPlayersViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				D3F8C5162847CAF40082012D /* Assets.xcassets */,
 				D3F8C5182847CAF40082012D /* LaunchScreen.storyboard */,
 				D3F8C51B2847CAF40082012D /* Info.plist */,
+				D3F8C52128480C810082012D /* TwoPlayersViewController.swift */,
 			);
 			path = TicTacToe;
 			sourceTree = "<group>";
@@ -140,6 +143,7 @@
 			files = (
 				D3F8C5122847CAF30082012D /* ViewController.swift in Sources */,
 				D3F8C50E2847CAF30082012D /* AppDelegate.swift in Sources */,
+				D3F8C52228480C810082012D /* TwoPlayersViewController.swift in Sources */,
 				D3F8C5102847CAF30082012D /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -68,6 +68,9 @@
                                                 </fragment>
                                             </attributedString>
                                         </buttonConfiguration>
+                                        <connections>
+                                            <segue destination="Txd-Ns-tUm" kind="presentation" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="hyw-MX-pfL"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -99,27 +102,68 @@
             </objects>
             <point key="canvasLocation" x="18.22429906542056" y="79.049676025917933"/>
         </scene>
-        <!--View Controller-->
+        <!--Two Players View Controller-->
         <scene sceneID="VA7-np-HZn">
             <objects>
-                <viewController id="Txd-Ns-tUm" sceneMemberID="viewController">
+                <viewController id="Txd-Ns-tUm" customClass="TwoPlayersViewController" customModule="TicTacToe" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="yje-vs-Yru">
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BG tictactoe" translatesAutoresizingMaskIntoConstraints="NO" id="Njm-K2-UEf">
+                                <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                            </imageView>
+                            <button opaque="NO" alpha="0.69999999999999996" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hH8-fn-COo">
+                                <rect key="frame" x="348" y="139" width="50" height="50"/>
+                                <color key="backgroundColor" red="0.32157194610000001" green="0.32156431670000002" blue="0.32156580689999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="fEN-hb-rct"/>
+                                    <constraint firstAttribute="height" constant="50" id="h2Y-MD-uQm"/>
+                                </constraints>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="xmark.square" catalog="system" imagePadding="10">
+                                    <attributedString key="attributedTitle"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="cancelButtonPressed" destination="Txd-Ns-tUm" eventType="touchUpInside" id="yms-9x-qQ4"/>
+                                </connections>
+                            </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="grid v2" translatesAutoresizingMaskIntoConstraints="NO" id="L5w-wn-JmI">
+                                <rect key="frame" x="20" y="269" width="388" height="450"/>
+                            </imageView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="42B-mL-lng"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="L5w-wn-JmI" firstAttribute="top" secondItem="hH8-fn-COo" secondAttribute="bottom" constant="80" id="8oO-Ym-wOk"/>
+                            <constraint firstItem="L5w-wn-JmI" firstAttribute="leading" secondItem="42B-mL-lng" secondAttribute="leading" constant="20" id="Cem-CK-X3k"/>
+                            <constraint firstItem="42B-mL-lng" firstAttribute="trailing" secondItem="L5w-wn-JmI" secondAttribute="trailing" constant="20" id="Gvt-uy-GTD"/>
+                            <constraint firstItem="hH8-fn-COo" firstAttribute="top" secondItem="42B-mL-lng" secondAttribute="top" constant="95" id="Va4-CM-clQ"/>
+                            <constraint firstItem="Njm-K2-UEf" firstAttribute="leading" secondItem="42B-mL-lng" secondAttribute="leading" id="dtk-EA-BJ8"/>
+                            <constraint firstItem="Njm-K2-UEf" firstAttribute="trailing" secondItem="42B-mL-lng" secondAttribute="trailing" id="gOd-7A-FD4"/>
+                            <constraint firstAttribute="bottom" secondItem="Njm-K2-UEf" secondAttribute="bottom" id="qe1-OP-RXe"/>
+                            <constraint firstItem="Njm-K2-UEf" firstAttribute="top" secondItem="yje-vs-Yru" secondAttribute="top" id="yGg-rc-zgB"/>
+                            <constraint firstItem="42B-mL-lng" firstAttribute="trailing" secondItem="hH8-fn-COo" secondAttribute="trailing" constant="30" id="zrg-Wm-Qjx"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="fXU-Yi-pEW"/>
+                    <connections>
+                        <outlet property="exitButton" destination="hH8-fn-COo" id="o79-gS-H9X"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d1N-y7-rUa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="891" y="80"/>
+            <point key="canvasLocation" x="890.18691588785043" y="79.697624190064801"/>
         </scene>
     </scenes>
     <resources>
         <image name="BG tictactoe" width="562.5" height="1218"/>
         <image name="LogoMain" width="270" height="270"/>
+        <image name="grid v2" width="450" height="450"/>
         <image name="person" catalog="system" width="128" height="117"/>
         <image name="person.2" catalog="system" width="128" height="81"/>
+        <image name="xmark.square" catalog="system" width="128" height="114"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
