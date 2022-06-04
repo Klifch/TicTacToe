@@ -11,7 +11,6 @@ import UIKit
 class DesignPreset {
     
     func buttonsSetUp(button: UIButton) {
-        
         let borderAlpha : CGFloat = 0.7
         let cornerRadius : CGFloat = 15.0
         
@@ -23,6 +22,15 @@ class DesignPreset {
     
     func buttonTextSetup(button: UIButton, text: String) {
         button.setTitle(text, for: UIControl.State.normal)
+    }
+    
+    func labelSetUp(label: UILabel) {
+        let cornerRadius : CGFloat = 15.0
+        
+        //label.backgroundColor = UIColor.clear
+        label.layer.borderColor = UIColor(white: 0.0, alpha: 0.7).cgColor
+        label.layer.borderWidth = 1.0
+        label.layer.cornerRadius = cornerRadius
     }
 }
 
@@ -63,7 +71,3 @@ class Mode {
 // example of class work, should be made from ViewDidLoad
 //let first = Mode(typ: .multi)
 //first.foo()
-
-class Game {
-    
-}
