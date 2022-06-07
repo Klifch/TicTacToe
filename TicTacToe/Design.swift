@@ -71,3 +71,21 @@ class Mode {
 // example of class work, should be made from ViewDidLoad
 //let first = Mode(typ: .multi)
 //first.foo()
+
+//class Example {
+//    
+//    var userCases: [Int] = [1, 4, 6, 8, 7]
+//    var winCases: [[Int]] = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9]]
+//    
+//    func foo() {
+//        for i in winCases {
+//            if userCases.contains {
+//                print("Yes")
+//            }
+//        }
+//    }
+//}
+
+class Test {
+    
+}

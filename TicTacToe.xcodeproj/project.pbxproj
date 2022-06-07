@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D3943FFA284931C8002B8596 /* Design.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3943FF9284931C8002B8596 /* Design.swift */; };
+		D3B41B15284E526D007C76B0 /* ComputerPlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B41B14284E526D007C76B0 /* ComputerPlayViewController.swift */; };
 		D3F8C50E2847CAF30082012D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F8C50D2847CAF30082012D /* AppDelegate.swift */; };
 		D3F8C5102847CAF30082012D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F8C50F2847CAF30082012D /* SceneDelegate.swift */; };
 		D3F8C5122847CAF30082012D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F8C5112847CAF30082012D /* ViewController.swift */; };
@@ -19,6 +20,7 @@
 
 /* Begin PBXFileReference section */
 		D3943FF9284931C8002B8596 /* Design.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Design.swift; sourceTree = "<group>"; };
+		D3B41B14284E526D007C76B0 /* ComputerPlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerPlayViewController.swift; sourceTree = "<group>"; };
 		D3F8C50A2847CAF30082012D /* TicTacToe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TicTacToe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3F8C50D2847CAF30082012D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D3F8C50F2847CAF30082012D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -68,6 +70,7 @@
 				D3F8C5182847CAF40082012D /* LaunchScreen.storyboard */,
 				D3F8C51B2847CAF40082012D /* Info.plist */,
 				D3F8C52128480C810082012D /* TwoPlayersViewController.swift */,
+				D3B41B14284E526D007C76B0 /* ComputerPlayViewController.swift */,
 				D3943FF9284931C8002B8596 /* Design.swift */,
 			);
 			path = TicTacToe;
@@ -144,6 +147,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3B41B15284E526D007C76B0 /* ComputerPlayViewController.swift in Sources */,
 				D3F8C5122847CAF30082012D /* ViewController.swift in Sources */,
 				D3F8C50E2847CAF30082012D /* AppDelegate.swift in Sources */,
 				D3F8C52228480C810082012D /* TwoPlayersViewController.swift in Sources */,

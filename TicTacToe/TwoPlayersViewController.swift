@@ -147,9 +147,25 @@ class TwoPlayersViewController: UIViewController {
                 break
             }
             else if firstPlayerChoices.count + secondPlayerChoices.count == 9 {
-                if firstUserMatch != match.count {
-                    if secondUserMatch != match.count {
-                        
+                for i in correct {
+                    let firstUserMatchV2 = firstPlayerChoices.filter { i.contains($0) }.count
+                    let secondUserMatchV2 = secondPlayerChoices.filter { i.contains($0) }.count
+                    
+                    if firstUserMatchV2 == i.count {
+                        tapsAllowed = false
+                        restartButton.isHidden = false
+                        winnerLabel.text = "X Wins!"
+                        winnerLabel.isHidden = false
+                        break
+                    }
+                    else if secondUserMatchV2 == match.count {
+                        tapsAllowed = false
+                        restartButton.isHidden = false
+                        winnerLabel.text = "O Wins!"
+                        winnerLabel.isHidden = false
+                        break
+                    }
+                    else if i == [.three, .five, .seven] && firstUserMatchV2 != i.count && secondUserMatchV2 != match.count {
                         tapsAllowed = false
                         restartButton.isHidden = false
                         winnerLabel.text = "Tie!"
