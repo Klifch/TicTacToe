@@ -107,15 +107,12 @@ class ComputerPlayViewController: UIViewController {
         
         guard availableBoxes.count > 0 else { return }
         
-        makeChoice(findBest(in: availableSpaces, type: availableBoxes))
+        makeChoice(bestMove(userBoxes: firstPlayerChoices, compBoxes: computerChoices, emptySpaces: availableSpaces))
     }
     
     func findBest(in spaces: [UIImageView], type boxes: [Box]) -> UIImageView {
         
-        return returnSpace(in: spaces,
-                           and: boxes,
-                           for: computerChoices,
-                           to: firstPlayerChoices)
+        return bestMove(userBoxes: firstPlayerChoices, compBoxes: computerChoices, emptySpaces: spaces)
     }
     
     func returnSpace(in emptySpaces: [UIImageView],
@@ -125,7 +122,6 @@ class ComputerPlayViewController: UIViewController {
         
         let testBoxes = emptyBoxes
         let randIndex = Int.random(in: 0 ..< emptySpaces.count)
-        let bestScore = 0
         
         for oneBox in testBoxes {
             var cpuChoices = compChoices
@@ -176,7 +172,140 @@ class ComputerPlayViewController: UIViewController {
             checkIfWin()
         }
     }
+/*
+ functions will be changed, if goes wrong change it back
+ changed funcs: check and returnSpace
+ */
+    func bestMove(userBoxes: [Box], compBoxes: [Box], emptySpaces: [UIImageView]) -> UIImageView {
+        var bestScore = -10000
+        let randIndex = Int.random(in: 0 ..< emptySpaces.count)
+        let human = userBoxes
+        var computer = compBoxes
+        var move: Box = .one
+        for i in Box.allCases {
+            if human.contains(i) || computer.contains(i) {
+                continue
+            }
+            else {
+                computer.insert(i, at: 0)
+                let score = miniMax(userBoxes: human, compBoxes: computer, depth: 0, isMaximizing: false)
+                computer.remove(at: 0)
+                if score > bestScore {
+                    bestScore = score
+                    move = i
+                }
+            }
+        }
+        for name in Box.allCases {
+            let box = getBox(for: name.rawValue)
+            if name == move {
+                return box
+            }
+        }
+        return(emptySpaces[randIndex])
+    }
+    
+    func miniMax(userBoxes: [Box], compBoxes: [Box], depth: Int, isMaximizing: Bool) -> Int {
+        var human = userBoxes
+        var computer = compBoxes
+        let result = checkWinner(user: userBoxes, computer: compBoxes)
+        if result != "none" {
+            if result == "X" {
+                return -10
+            }
+            else if result == "O" {
+                return 10
+            }
+            else if result == "Tie" {
+                return 0
+            }
+        }
+        if isMaximizing == true {
+            var bestScore = -10000
+            for i in Box.allCases {
+                if human.contains(i) || computer.contains(i) {
+                    continue
+                }
+                else {
+                    computer.insert(i, at: 0)
+                    let score = miniMax(userBoxes: human, compBoxes: computer, depth: depth + 1, isMaximizing: false)
+                    computer.remove(at: 0)
+                    bestScore = max(score, bestScore)
+                }
+            }
+            return bestScore
+        }
+        else {
+            var bestScore = 10000
+            for i in Box.allCases {
+                if computer.contains(i) || human.contains(i) {
+                    continue
+                }
+                else {
+                    human.insert(i, at: 0)
+                    let score = miniMax(userBoxes: human, compBoxes: computer, depth: depth + 1, isMaximizing: true)
+                    human.remove(at: 0)
+                    bestScore = min(score, bestScore)
+                }
+            }
+            return bestScore
+        }
+    }
+    
+    func checkWinner(user combinationUser: [Box], computer combinationComputer: [Box]) -> String {
+        let result = "none"
+        var correct = [[Box]]()
 
+        let firstRow: [Box] = [.one, .two, .three]
+        let secondRow: [Box] = [.four, .five, .six]
+        let thirdRow: [Box] = [.seven, .eight, .nine]
+
+        let firstColumn: [Box] = [.one, .four, .seven]
+        let secondColumn: [Box] = [.two, .five, .eight]
+        let thirdColumn: [Box] = [.three, .six, .nine]
+
+        let firsDiagonal: [Box] = [.one, .five, .nine]
+        let secondDiagonal: [Box] = [.three, .five, .seven]
+
+        correct.append(firstRow)
+        correct.append(secondRow)
+        correct.append(thirdRow)
+        correct.append(firstColumn)
+        correct.append(secondColumn)
+        correct.append(thirdColumn)
+        correct.append(firsDiagonal)
+        correct.append(secondDiagonal)
+
+        for match in correct {
+            let combinationMatchComputer = combinationComputer.filter { match.contains($0) }.count
+            let combinationMatchUser = combinationUser.filter { match.contains ($0) }.count
+            
+            if combinationMatchComputer == match.count {
+                return "O"
+            }
+            else if combinationMatchUser == match.count {
+                return "X"
+            }
+            else if combinationUser.count + combinationComputer.count == 9 {
+                for i in correct {
+                    let combinationMatchCPV2 = combinationComputer.filter { i.contains($0) }.count
+                    let combinationMatchUSV2 = combinationComputer.filter { i.contains($0) }.count
+                    
+                    if combinationMatchCPV2 == i.count {
+                        return "O"
+                    }
+                    else if combinationMatchUSV2 == i.count {
+                        return "X"
+                    }
+                    else if i == [.three, .five, .seven] && combinationMatchCPV2 != match.count && combinationMatchUSV2 != i.count {
+                        return "Tie"
+                    }
+                }
+            }
+        }
+        return result
+    }
+    
     func check(for combination: [Box]) -> Int {
         var result = 0
         var correct = [[Box]]()
