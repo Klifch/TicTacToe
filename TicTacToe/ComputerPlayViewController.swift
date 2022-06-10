@@ -100,6 +100,7 @@ class ComputerPlayViewController: UIViewController {
     // action for the box
     @objc func boxClicked(_ sender: UITapGestureRecognizer) {
         let selectedBox = getBox(for: sender.name ?? "")
+        guard selectedBox.image == nil else { return }
         if tapsAllowed == true {
             makeChoiceHuman(selectedBox)
             
@@ -130,6 +131,7 @@ class ComputerPlayViewController: UIViewController {
     }
     
     func makeChoiceHuman(_ selectedBox: UIImageView) {
+        guard selectedBox.image == nil else { return }
         if player == "X" {
             selectedBox.image = UIImage(named: "jesus_killer_alpha")
         }
@@ -147,6 +149,7 @@ class ComputerPlayViewController: UIViewController {
     }
     
     func makeChoiceComputer(_ selectedBox: UIImageView) {
+        guard selectedBox.image == nil else { return }
         if ai == "O" {
             selectedBox.image = UIImage(named: "circle_alpha")
         }
@@ -164,7 +167,7 @@ class ComputerPlayViewController: UIViewController {
     }
 
     func bestMove(userBoxes: [Box], compBoxes: [Box], emptySpaces: [UIImageView]) -> UIImageView {
-        var bestScore = -10000
+        var bestScore = -1000
         let randIndex = Int.random(in: 0 ..< emptySpaces.count)
         let human = userBoxes
         var computer = compBoxes
@@ -183,6 +186,7 @@ class ComputerPlayViewController: UIViewController {
                 }
             }
         }
+        
         for name in Box.allCases {
             let box = getBox(for: name.rawValue)
             if name == move {
@@ -195,7 +199,7 @@ class ComputerPlayViewController: UIViewController {
     func miniMax(userBoxes: [Box], compBoxes: [Box], depth: Int, isMaximizing: Bool) -> Int {
         var human = userBoxes
         var computer = compBoxes
-        let result = checkWinner(user: userBoxes, computer: compBoxes)
+        let result = checkWinner(user: human, computer: computer)
         if result != "none" {
             if result == player {
                 return -10
@@ -276,7 +280,7 @@ class ComputerPlayViewController: UIViewController {
             else if combinationUser.count + combinationComputer.count == 9 {
                 for i in correct {
                     let combinationMatchCPV2 = combinationComputer.filter { i.contains($0) }.count
-                    let combinationMatchUSV2 = combinationComputer.filter { i.contains($0) }.count
+                    let combinationMatchUSV2 = combinationUser.filter { i.contains($0) }.count
                     
                     if combinationMatchCPV2 == i.count {
                         return ai
@@ -363,7 +367,6 @@ class ComputerPlayViewController: UIViewController {
                 }
             }
         }
-
     }
 
     func resetGame() {
@@ -403,6 +406,6 @@ class ComputerPlayViewController: UIViewController {
             return box9
         }
     }
-
+    
 }
 
