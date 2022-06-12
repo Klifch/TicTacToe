@@ -28,6 +28,7 @@ class TwoPlayersViewController: UIViewController {
     var secondPlayerChoices: [Box] = []
     var tapsAllowed = true
 
+    //start setup of screen elements
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -41,15 +42,15 @@ class TwoPlayersViewController: UIViewController {
         
         restartButton.isHidden = true
         
-        makeTap(on: box1, type: .one)
-        makeTap(on: box2, type: .two)
-        makeTap(on: box3, type: .three)
-        makeTap(on: box4, type: .four)
-        makeTap(on: box5, type: .five)
-        makeTap(on: box6, type: .six)
-        makeTap(on: box7, type: .seven)
-        makeTap(on: box8, type: .eight)
-        makeTap(on: box9, type: .nine)
+        makeTap(on: box1, index: .one)
+        makeTap(on: box2, index: .two)
+        makeTap(on: box3, index: .three)
+        makeTap(on: box4, index: .four)
+        makeTap(on: box5, index: .five)
+        makeTap(on: box6, index: .six)
+        makeTap(on: box7, index: .seven)
+        makeTap(on: box8, index: .eight)
+        makeTap(on: box9, index: .nine)
     
     }
     
@@ -61,8 +62,8 @@ class TwoPlayersViewController: UIViewController {
         resetGame()
     }
     
-    // function to recognize the tap on Images and exact Image() that was tapped
-    func makeTap(on image: UIImageView, type box: Box) {
+    // function to recognize the tap on Images and exact Image that was tapped
+    func makeTap(on image: UIImageView, index box: Box) {
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.boxClicked(_:))) // creating gestureRecognizer
         tap.name = box.rawValue
         image.isUserInteractionEnabled = true // user moves are not ignored
@@ -76,7 +77,7 @@ class TwoPlayersViewController: UIViewController {
             makeChoice(selectedBox)
         }
     }
-
+    // set an image and check for a win combination
     func makeChoice(_ selectedBox: UIImageView) {
         guard selectedBox.image == nil else { return }
 
@@ -104,7 +105,7 @@ class TwoPlayersViewController: UIViewController {
             checkIfWin()
         }
     }
-
+    // check for a winning combination
     func checkIfWin() {
         var correct = [[Box]]()
 
@@ -177,7 +178,7 @@ class TwoPlayersViewController: UIViewController {
         }
 
     }
-
+    // reset the game
     func resetGame() {
         tapsAllowed = true
         for name in Box.allCases {
@@ -191,7 +192,7 @@ class TwoPlayersViewController: UIViewController {
         winnerLabel.isHidden = true
         winnerLabel.text = ""
     }
-
+    // find the box by index
     func getBox(for name: String) -> UIImageView {
         let box = Box(rawValue: name) ?? .one
 

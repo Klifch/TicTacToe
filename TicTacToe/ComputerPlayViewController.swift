@@ -44,18 +44,17 @@ class ComputerPlayViewController: UIViewController {
         
         resetButton.isHidden = true
         
-        makeTap(on: box1, type: .one)
-        makeTap(on: box2, type: .two)
-        makeTap(on: box3, type: .three)
-        makeTap(on: box4, type: .four)
-        makeTap(on: box5, type: .five)
-        makeTap(on: box6, type: .six)
-        makeTap(on: box7, type: .seven)
-        makeTap(on: box8, type: .eight)
-        makeTap(on: box9, type: .nine)
+        makeTap(on: box1, index: .one)
+        makeTap(on: box2, index: .two)
+        makeTap(on: box3, index: .three)
+        makeTap(on: box4, index: .four)
+        makeTap(on: box5, index: .five)
+        makeTap(on: box6, index: .six)
+        makeTap(on: box7, index: .seven)
+        makeTap(on: box8, index: .eight)
+        makeTap(on: box9, index: .nine)
 
         whoWillGoFirst()
-        
         
     }
     
@@ -67,7 +66,7 @@ class ComputerPlayViewController: UIViewController {
         resetGame()
         whoWillGoFirst()
     }
-    
+    // randomly find the box to take
     func rollFirstStep() {
         let bestVariants: [Box] = [.one, .three, .five, .seven, .nine]
         let random = Int.random(in: 0 ..< bestVariants.count)
@@ -75,7 +74,7 @@ class ComputerPlayViewController: UIViewController {
         makeChoiceComputer(box)
         tapsAllowed = true
     }
-    
+    // randomly decide who will be X player
     func whoWillGoFirst() {
         let firstStep = Int.random(in: 1...2)
         if firstStep == 1 {
@@ -89,15 +88,16 @@ class ComputerPlayViewController: UIViewController {
             player = "X"
         }
     }
-    
-    func makeTap(on image: UIImageView, type box: Box) {
+
+    // function to recognize the tap on Images and exact Image that was tapped
+    func makeTap(on image: UIImageView, index box: Box) {
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.boxClicked(_:))) // creating gestureRecognizer
         tap.name = box.rawValue
         image.isUserInteractionEnabled = true // user moves are not ignored
         image.addGestureRecognizer(tap) // connecting gestureRecognizer to the image
     }
 
-    // action for the box
+    // action for the box and for ai right after it
     @objc func boxClicked(_ sender: UITapGestureRecognizer) {
         let selectedBox = getBox(for: sender.name ?? "")
         guard selectedBox.image == nil else { return }
@@ -113,6 +113,7 @@ class ComputerPlayViewController: UIViewController {
         }
     }
     
+    // find all empty boxes
     func computerPlay() {
         var availableSpaces = [UIImageView]()
         var availableBoxes = [Box]()
@@ -130,6 +131,7 @@ class ComputerPlayViewController: UIViewController {
         tapsAllowed = true
     }
     
+    // put a figure inside the chosen box
     func makeChoiceHuman(_ selectedBox: UIImageView) {
         guard selectedBox.image == nil else { return }
         if player == "X" {
@@ -148,6 +150,7 @@ class ComputerPlayViewController: UIViewController {
         checkIfWin()
     }
     
+    // put a figure inside the chosen box
     func makeChoiceComputer(_ selectedBox: UIImageView) {
         guard selectedBox.image == nil else { return }
         if ai == "O" {
@@ -166,6 +169,7 @@ class ComputerPlayViewController: UIViewController {
         checkIfWin()
     }
 
+    //find the best move from empty spaces
     func bestMove(userBoxes: [Box], compBoxes: [Box], emptySpaces: [UIImageView]) -> UIImageView {
         var bestScore = -1000
         let randIndex = Int.random(in: 0 ..< emptySpaces.count)
@@ -196,6 +200,7 @@ class ComputerPlayViewController: UIViewController {
         return(emptySpaces[randIndex])
     }
     
+    // calculate the best move fo ai
     func miniMax(userBoxes: [Box], compBoxes: [Box], depth: Int, isMaximizing: Bool) -> Int {
         var human = userBoxes
         var computer = compBoxes
@@ -243,6 +248,7 @@ class ComputerPlayViewController: UIViewController {
         }
     }
     
+    // return result of the artificial game to the MiniMax
     func checkWinner(user combinationUser: [Box], computer combinationComputer: [Box]) -> String {
         let result = "none"
         var correct = [[Box]]()
@@ -296,7 +302,8 @@ class ComputerPlayViewController: UIViewController {
         }
         return result
     }
-
+    
+    // check for a winning combination
     func checkIfWin() {
         var correct = [[Box]]()
 
@@ -368,7 +375,8 @@ class ComputerPlayViewController: UIViewController {
             }
         }
     }
-
+    
+    // restart the game
     func resetGame() {
         tapsAllowed = true
         for name in Box.allCases {
@@ -382,6 +390,7 @@ class ComputerPlayViewController: UIViewController {
         winLabel.text = ""
     }
 
+    // find the box by index
     func getBox(for name: String) -> UIImageView {
         let box = Box(rawValue: name) ?? .one
 
