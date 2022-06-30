@@ -1,14 +1,14 @@
 //
-//  ComputerPlayViewController.swift
+//  Computer4x4ViewController.swift
 //  TicTacToe
 //
-//  Created by Alex Demidenko on 06.06.2022.
+//  Created by Alex Demidenko on 24.06.2022.
 //
 
 import UIKit
 
-class ComputerPlayViewController: UIViewController {
-    
+class Computer4x4ViewController: UIViewController {
+
     @IBOutlet weak var box1: UIImageView!
     @IBOutlet weak var box2: UIImageView!
     @IBOutlet weak var box3: UIImageView!
@@ -18,14 +18,20 @@ class ComputerPlayViewController: UIViewController {
     @IBOutlet weak var box7: UIImageView!
     @IBOutlet weak var box8: UIImageView!
     @IBOutlet weak var box9: UIImageView!
+    @IBOutlet weak var box10: UIImageView!
+    @IBOutlet weak var box11: UIImageView!
+    @IBOutlet weak var box12: UIImageView!
+    @IBOutlet weak var box13: UIImageView!
+    @IBOutlet weak var box14: UIImageView!
+    @IBOutlet weak var box15: UIImageView!
+    @IBOutlet weak var box16: UIImageView!
     
-    @IBOutlet var exitButton: UIButton!
+    @IBOutlet var winnerLabel: UILabel!
     @IBOutlet var resetButton: UIButton!
+    @IBOutlet var cancelButton: UIButton!
     
-    @IBOutlet var winLabel: UILabel!
-
-    var playerChoices: [Box] = []
-    var computerChoices: [Box] = []
+    var playerChoices: [Box16] = []
+    var computerChoices: [Box16] = []
     var tapsAllowed = true
     var firstStands: String = ""
     var player: String = "X"
@@ -35,13 +41,12 @@ class ComputerPlayViewController: UIViewController {
         super.viewDidLoad()
         
         let design = DesignPreset()
-        design.labelSetUp(label: winLabel)
-        winLabel.isHidden = true
-        
-        design.buttonsSetUp(button: exitButton)
+        design.buttonsSetUp(button: cancelButton)
         design.buttonsSetUp(button: resetButton)
         design.buttonTextSetup(button: resetButton, text: "Restart?")
+        design.labelSetUp(label: winnerLabel)
         
+        winnerLabel.isHidden = true
         resetButton.isHidden = true
         
         makeTap(on: box1, index: .one)
@@ -53,30 +58,34 @@ class ComputerPlayViewController: UIViewController {
         makeTap(on: box7, index: .seven)
         makeTap(on: box8, index: .eight)
         makeTap(on: box9, index: .nine)
+        makeTap(on: box10, index: .ten)
+        makeTap(on: box11, index: .eleven)
+        makeTap(on: box12, index: .twelve)
+        makeTap(on: box13, index: .thirteen)
+        makeTap(on: box14, index: .fourteen)
+        makeTap(on: box15, index: .fifteen)
+        makeTap(on: box16, index: .sixteen)
 
         whoWillGoFirst()
-        
     }
     
-    @IBAction func exitButtonPressed() {
+    @IBAction func cancelButtonPressed() {
         dismiss(animated: true)
-    }
     
+    }
     @IBAction func resetButtonPressed() {
         resetGame()
         whoWillGoFirst()
     }
     
-    // randomly find the box to take
     func rollFirstStep() {
-        let bestVariants: [Box] = [.one, .three, .five, .seven, .nine]
+        let bestVariants: [Box16] = [.one, .four, .six, .seven, .ten, .eleven, .thirteen, .sixteen]
         let random = Int.random(in: 0 ..< bestVariants.count)
         let box = getBox(for: bestVariants[random].rawValue)
         makeChoiceComputer(box)
         tapsAllowed = true
     }
     
-    // randomly decide who will be X player
     func whoWillGoFirst() {
         let firstStep = Int.random(in: 1...2)
         if firstStep == 1 {
@@ -90,16 +99,14 @@ class ComputerPlayViewController: UIViewController {
             player = "X"
         }
     }
-
-    // function to recognize the tap on Images and exact Image that was tapped
-    func makeTap(on image: UIImageView, index box: Box) {
+    
+    func makeTap(on image: UIImageView, index box: Box16) {
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.boxClicked(_:))) // creating gestureRecognizer
         tap.name = box.rawValue
         image.isUserInteractionEnabled = true // user moves are not ignored
         image.addGestureRecognizer(tap) // connecting gestureRecognizer to the image
     }
-
-    // action for the box and for ai right after it
+    
     @objc func boxClicked(_ sender: UITapGestureRecognizer) {
         let selectedBox = getBox(for: sender.name ?? "")
         guard selectedBox.image == nil else { return }
@@ -115,11 +122,10 @@ class ComputerPlayViewController: UIViewController {
         }
     }
     
-    // find all empty boxes
     func computerPlay() {
         var availableSpaces = [UIImageView]()
-        var availableBoxes = [Box]()
-        for name in Box.allCases {
+        var availableBoxes = [Box16]()
+        for name in Box16.allCases {
             let box = getBox(for: name.rawValue)
             if box.image == nil {
                 availableSpaces.append(box)
@@ -128,12 +134,20 @@ class ComputerPlayViewController: UIViewController {
         }
         
         guard availableBoxes.count > 0 else { return }
-        
-        makeChoiceComputer(bestMove(userBoxes: playerChoices, compBoxes: computerChoices, emptySpaces: availableSpaces))
-        tapsAllowed = true
+        if availableBoxes.count >= 13 {
+            makeChoiceComputer(availableSpaces[Int.random(in: 0 ..< availableSpaces.count)])
+            tapsAllowed = true
+        }
+        else if availableBoxes.count < 13 && availableBoxes.count > 9 {
+            makeChoiceComputer(calculate(computerBoxes: computerChoices, userBoxes: playerChoices, availableBoxes: availableBoxes))
+            tapsAllowed = true
+        }
+        else if availableBoxes.count <= 9 {
+            makeChoiceComputer(bestMove(userBoxes: playerChoices, compBoxes: computerChoices, emptySpaces: availableSpaces))
+            tapsAllowed = true
+        }
     }
     
-    // put a figure inside the chosen box
     func makeChoiceHuman(_ selectedBox: UIImageView) {
         guard selectedBox.image == nil else { return }
         if player == "X" {
@@ -143,7 +157,7 @@ class ComputerPlayViewController: UIViewController {
             selectedBox.image = UIImage(named: "circle_alpha")
         }
         
-        for name in Box.allCases {
+        for name in Box16.allCases {
             let box = getBox(for: name.rawValue)
             if box == selectedBox {
                 playerChoices.append(name)
@@ -152,7 +166,6 @@ class ComputerPlayViewController: UIViewController {
         checkIfWin()
     }
     
-    // put a figure inside the chosen box
     func makeChoiceComputer(_ selectedBox: UIImageView) {
         guard selectedBox.image == nil else { return }
         if ai == "O" {
@@ -162,7 +175,7 @@ class ComputerPlayViewController: UIViewController {
             selectedBox.image = UIImage(named: "jesus_killer_alpha")
         }
         
-        for name in Box.allCases {
+        for name in Box16.allCases {
             let box = getBox(for: name.rawValue)
             if box == selectedBox {
                 computerChoices.append(name)
@@ -170,15 +183,14 @@ class ComputerPlayViewController: UIViewController {
         }
         checkIfWin()
     }
-
-    //find the best move from empty spaces
-    func bestMove(userBoxes: [Box], compBoxes: [Box], emptySpaces: [UIImageView]) -> UIImageView {
+    
+    func bestMove(userBoxes: [Box16], compBoxes: [Box16], emptySpaces: [UIImageView]) -> UIImageView {
         var bestScore = -1000
         let randIndex = Int.random(in: 0 ..< emptySpaces.count)
         let human = userBoxes
         var computer = compBoxes
-        var move: Box = .one
-        for i in Box.allCases {
+        var move: Box16 = .one
+        for i in Box16.allCases {
             if human.contains(i) || computer.contains(i) {
                 continue
             }
@@ -193,7 +205,7 @@ class ComputerPlayViewController: UIViewController {
             }
         }
         
-        for name in Box.allCases {
+        for name in Box16.allCases {
             let box = getBox(for: name.rawValue)
             if name == move {
                 return box
@@ -202,8 +214,7 @@ class ComputerPlayViewController: UIViewController {
         return(emptySpaces[randIndex])
     }
     
-    // calculate the best move fo ai
-    func miniMax(userBoxes: [Box], compBoxes: [Box], depth: Int, alpha: Int, beta: Int, isMaximizing: Bool) -> Int {
+    func miniMax(userBoxes: [Box16], compBoxes: [Box16], depth: Int, alpha: Int, beta: Int, isMaximizing: Bool) -> Int {
         var human = userBoxes
         var computer = compBoxes
         var tempAlpha = alpha
@@ -221,8 +232,8 @@ class ComputerPlayViewController: UIViewController {
             }
         }
         if isMaximizing == true {
-            var bestScore = -10000
-            for i in Box.allCases {
+            var bestScore = -1000
+            for i in Box16.allCases {
                 if human.contains(i) || computer.contains(i) {
                     continue
                 }
@@ -240,8 +251,8 @@ class ComputerPlayViewController: UIViewController {
             return bestScore
         }
         else {
-            var bestScore = 10000
-            for i in Box.allCases {
+            var bestScore = 1000
+            for i in Box16.allCases {
                 if computer.contains(i) || human.contains(i) {
                     continue
                 }
@@ -260,31 +271,111 @@ class ComputerPlayViewController: UIViewController {
         }
     }
     
-    // return result of the artificial game to the MiniMax
-    func checkWinner(user combinationUser: [Box], computer combinationComputer: [Box]) -> String {
+    func doMove(combinationComputer: [Box16], combinationUser: [Box16], availableBoxes: [Box16]) -> Box16 {
+        var correct = [[Box16]]()
+        
+        let firstRow: [Box16] = [.one, .two, .three, .four]
+        let secondRow: [Box16] = [.five, .six, .seven, .eight]
+        let thirdRow: [Box16] = [.nine, .ten, .eleven, .twelve]
+        let fourthRow: [Box16] = [.thirteen, .fourteen, .fifteen, .sixteen]
+
+        let firstColumn: [Box16] = [.one, .five, .nine, .thirteen]
+        let secondColumn: [Box16] = [.two, .six, .ten, .fourteen]
+        let thirdColumn: [Box16] = [.three, .seven, .eleven, .fifteen]
+        let fourthColumn: [Box16] = [.four, .eight, .twelve, .sixteen]
+
+        let firsDiagonal: [Box16] = [.one, .six, .eleven, .sixteen]
+        let secondDiagonal: [Box16] = [.four, .seven, .ten, .thirteen]
+        
+        correct.append(firstRow)
+        correct.append(secondRow)
+        correct.append(thirdRow)
+        correct.append(fourthRow)
+        correct.append(firstColumn)
+        correct.append(secondColumn)
+        correct.append(thirdColumn)
+        correct.append(fourthColumn)
+        correct.append(firsDiagonal)
+        correct.append(secondDiagonal)
+        
+        var bestMove: Box16 = availableBoxes[Int.random(in: 0 ..< availableBoxes.count)]
+        var bestMatch: [Box16] = []
+        var bestCount: Int = 0
+//        var bestEnemy: [Box16] = []
+        
+        for match in correct {
+            let combinationMatchComputer = combinationComputer.filter { match.contains($0) }
+            let combinationMatchUser = combinationUser.filter { match.contains($0) }
+            if combinationMatchComputer.count >= 1 {
+                if combinationMatchComputer.count > bestCount {
+                    bestMatch = match
+                    bestCount = combinationMatchComputer.count
+                }
+            }
+            if combinationMatchUser.count == 3 {
+                for i in match {
+                    if combinationMatchUser.contains(i) || combinationMatchComputer.contains(i) {
+                        continue
+                    }
+                    else {
+                        return i
+                    }
+                }
+            }
+        }
+        for i in bestMatch {
+            if combinationUser.contains(i) || combinationComputer.contains(i) {
+                continue
+            }
+            else {
+                bestMove = i
+                return bestMove
+            }
+        }
+        return bestMove
+    }
+    
+    func calculate(computerBoxes: [Box16], userBoxes: [Box16], availableBoxes: [Box16]) -> UIImageView {
+        var safe = getBox(for: availableBoxes[Int.random(in: 0 ..< availableBoxes.count)].rawValue)
+        let bestMove = doMove(combinationComputer: computerBoxes, combinationUser: userBoxes, availableBoxes: availableBoxes)
+        for i in Box16.allCases {
+            let name = getBox(for: i.rawValue)
+            if i == bestMove {
+                safe = name
+                return safe
+            }
+        }
+        return safe
+    }
+    
+    func checkWinner(user combinationUser: [Box16], computer combinationComputer: [Box16]) -> String {
         let result = "none"
-        var correct = [[Box]]()
+        var correct = [[Box16]]()
 
-        let firstRow: [Box] = [.one, .two, .three]
-        let secondRow: [Box] = [.four, .five, .six]
-        let thirdRow: [Box] = [.seven, .eight, .nine]
+        let firstRow: [Box16] = [.one, .two, .three, .four]
+        let secondRow: [Box16] = [.five, .six, .seven, .eight]
+        let thirdRow: [Box16] = [.nine, .ten, .eleven, .twelve]
+        let fourthRow: [Box16] = [.thirteen, .fourteen, .fifteen, .sixteen]
 
-        let firstColumn: [Box] = [.one, .four, .seven]
-        let secondColumn: [Box] = [.two, .five, .eight]
-        let thirdColumn: [Box] = [.three, .six, .nine]
+        let firstColumn: [Box16] = [.one, .five, .nine, .thirteen]
+        let secondColumn: [Box16] = [.two, .six, .ten, .fourteen]
+        let thirdColumn: [Box16] = [.three, .seven, .eleven, .fifteen]
+        let fourthColumn: [Box16] = [.four, .eight, .twelve, .sixteen]
 
-        let firsDiagonal: [Box] = [.one, .five, .nine]
-        let secondDiagonal: [Box] = [.three, .five, .seven]
+        let firsDiagonal: [Box16] = [.one, .six, .eleven, .sixteen]
+        let secondDiagonal: [Box16] = [.four, .seven, .ten, .thirteen]
 
         correct.append(firstRow)
         correct.append(secondRow)
         correct.append(thirdRow)
+        correct.append(fourthRow)
         correct.append(firstColumn)
         correct.append(secondColumn)
         correct.append(thirdColumn)
+        correct.append(fourthColumn)
         correct.append(firsDiagonal)
         correct.append(secondDiagonal)
-
+        
         for match in correct {
             let combinationMatchComputer = combinationComputer.filter { match.contains($0) }.count
             let combinationMatchUser = combinationUser.filter { match.contains ($0) }.count
@@ -295,18 +386,18 @@ class ComputerPlayViewController: UIViewController {
             else if combinationMatchUser == match.count {
                 return player
             }
-            else if combinationUser.count + combinationComputer.count == 9 {
+            else if combinationUser.count + combinationComputer.count == 16 {
                 for i in correct {
                     let combinationMatchCPV2 = combinationComputer.filter { i.contains($0) }.count
                     let combinationMatchUSV2 = combinationUser.filter { i.contains($0) }.count
-                    
+
                     if combinationMatchCPV2 == i.count {
                         return ai
                     }
                     else if combinationMatchUSV2 == i.count {
                         return player
                     }
-                    else if i == [.three, .five, .seven] && combinationMatchCPV2 != match.count && combinationMatchUSV2 != i.count {
+                    if i == [.four, .seven, .ten, .thirteen] && combinationMatchCPV2 != i.count && combinationMatchUSV2 != i.count {
                         return "Tie"
                     }
                 }
@@ -315,27 +406,30 @@ class ComputerPlayViewController: UIViewController {
         return result
     }
     
-    // check for a winning combination
     func checkIfWin() {
-        var correct = [[Box]]()
+        var correct = [[Box16]]()
 
-        let firstRow: [Box] = [.one, .two, .three]
-        let secondRow: [Box] = [.four, .five, .six]
-        let thirdRow: [Box] = [.seven, .eight, .nine]
+        let firstRow: [Box16] = [.one, .two, .three, .four]
+        let secondRow: [Box16] = [.five, .six, .seven, .eight]
+        let thirdRow: [Box16] = [.nine, .ten, .eleven, .twelve]
+        let fourthRow: [Box16] = [.thirteen, .fourteen, .fifteen, .sixteen]
 
-        let firstColumn: [Box] = [.one, .four, .seven]
-        let secondColumn: [Box] = [.two, .five, .eight]
-        let thirdColumn: [Box] = [.three, .six, .nine]
+        let firstColumn: [Box16] = [.one, .five, .nine, .thirteen]
+        let secondColumn: [Box16] = [.two, .six, .ten, .fourteen]
+        let thirdColumn: [Box16] = [.three, .seven, .eleven, .fifteen]
+        let fourthColumn: [Box16] = [.four, .eight, .twelve, .sixteen]
 
-        let firsDiagonal: [Box] = [.one, .five, .nine]
-        let secondDiagonal: [Box] = [.three, .five, .seven]
+        let firsDiagonal: [Box16] = [.one, .six, .eleven, .sixteen]
+        let secondDiagonal: [Box16] = [.four, .seven, .ten, .thirteen]
 
         correct.append(firstRow)
         correct.append(secondRow)
         correct.append(thirdRow)
+        correct.append(fourthRow)
         correct.append(firstColumn)
         correct.append(secondColumn)
         correct.append(thirdColumn)
+        correct.append(fourthColumn)
         correct.append(firsDiagonal)
         correct.append(secondDiagonal)
 
@@ -346,18 +440,18 @@ class ComputerPlayViewController: UIViewController {
             if firstUserMatch == match.count {
                 tapsAllowed = false
                 resetButton.isHidden = false
-                winLabel.text = "\(player) Wins!"
-                winLabel.isHidden = false
+                winnerLabel.text = "\(player) Wins!"
+                winnerLabel.isHidden = false
                 break
             }
             else if computerMatch == match.count {
                 tapsAllowed = false
                 resetButton.isHidden = false
-                winLabel.text = "\(ai) Wins!"
-                winLabel.isHidden = false
+                winnerLabel.text = "\(ai) Wins!"
+                winnerLabel.isHidden = false
                 break
             }
-            else if playerChoices.count + computerChoices.count == 9 {
+            else if playerChoices.count + computerChoices.count == 16 {
                 for i in correct {
                     let firstUserMatchV2 = playerChoices.filter { i.contains($0) }.count
                     let computerMatchV2 = computerChoices.filter { i.contains($0) }.count
@@ -365,46 +459,45 @@ class ComputerPlayViewController: UIViewController {
                     if firstUserMatchV2 == i.count {
                         tapsAllowed = false
                         resetButton.isHidden = false
-                        winLabel.text = "\(player) Wins!"
-                        winLabel.isHidden = false
+                        winnerLabel.text = "\(player) Wins!"
+                        winnerLabel.isHidden = false
                         break
                     }
                     else if computerMatchV2 == match.count {
                         tapsAllowed = false
                         resetButton.isHidden = false
-                        winLabel.text = "\(player) Wins!"
-                        winLabel.isHidden = false
+                        winnerLabel.text = "\(ai) Wins!"
+                        winnerLabel.isHidden = false
                         break
                     }
-                    else if i == [.three, .five, .seven] && firstUserMatchV2 != i.count && computerMatchV2 != match.count {
+                    else if i == [.four, .seven, .ten, .thirteen] && firstUserMatchV2 != i.count && computerMatchV2 != i.count {
                         tapsAllowed = false
                         resetButton.isHidden = false
-                        winLabel.text = "Tie!"
-                        winLabel.isHidden = false
+                        winnerLabel.text = "Tie!"
+                        winnerLabel.isHidden = false
                         break
                     }
                 }
             }
         }
+
     }
     
-    // restart the game
     func resetGame() {
         tapsAllowed = true
-        for name in Box.allCases {
+        for name in Box16.allCases {
             let box = getBox(for: name.rawValue)
             box.image = nil
         }
         playerChoices = []
         computerChoices = []
         resetButton.isHidden = true
-        winLabel.isHidden = true
-        winLabel.text = ""
+        winnerLabel.isHidden = true
+        winnerLabel.text = ""
     }
-
-    // find the box by index
+    
     func getBox(for name: String) -> UIImageView {
-        let box = Box(rawValue: name) ?? .one
+        let box = Box16(rawValue: name) ?? .one
 
         switch box {
         case .one:
@@ -425,8 +518,20 @@ class ComputerPlayViewController: UIViewController {
             return box8
         case .nine:
             return box9
+        case .ten:
+            return box10
+        case .eleven:
+            return box11
+        case .twelve:
+            return box12
+        case .thirteen:
+            return box13
+        case .fourteen:
+            return box14
+        case .fifteen:
+            return box15
+        case .sixteen:
+            return box16
         }
     }
-    
 }
-
